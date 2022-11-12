@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 
 services:
   nginx-proxy:
@@ -9,17 +9,28 @@ services:
       - "80:80"
       - "443:443"
     volumes:
+      - conf:/etc/nginx/conf.d
       - certs:/etc/nginx/certs
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
+    network_mode: bridge
+
   acme-companion:
     image: nginxproxy/acme-companion
     environment:
-      - DEFAULT_EMAIL="ana@nekomimi.pet"
+      - DEFAULT_EMAIL=contact@nekomimi.pet
     volumes_from:
       - nginx-proxy
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - acme:/etc/acme.sh
-    
+      - certs:/etc/nginx/certs:rw
+    network_mode: bridge
+
+volumes:
+  conf:
+  vhost:
+  html:
+  certs:
+  acme:
