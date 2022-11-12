@@ -1,8 +1,11 @@
+This image sets up reverse proxies with letsencrypt SSL certs to containers automatically
+
+run with
 ```bash
 docker-compose up
 ```
 
-spin up any proxied docker container with env VIRTUAL_HOST, VIRTUAL_PORT, LETSENCRYPT_HOST
+spin up any proxied docker container with env VIRTUAL_HOST, VIRTUAL_PORT, LETSENCRYPT_HOST through docker or with docker-compose
 
 ```bash
 docker run --detach \
@@ -14,7 +17,6 @@ docker run --detach \
     grafana/grafana
 ```
 
-docker-compose.yml
 ```yml
 version: '3.3'
 services:
