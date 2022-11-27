@@ -1,0 +1,44 @@
+version: "3.3"
+
+services:
+  mc:
+    image: itzg/minecraft-server:java8-multiarch
+    ports:
+      - "25565:25565"
+    environment:
+      EULA: "TRUE"
+      TYPE: "CURSEFORGE"
+      VERSION: "1.12.2"
+      CF_SERVER_MOD: /modpacks/MC_Eternal_1.6.1_Server.zip
+      MEMORY: 6G
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./minecraft-data:/data
+      - ./modpacks:/modpacks
+    dns:
+      - "8.8.8.8"
+      - "1.1.1.1"
+  web:
+    image: itzg/rcon
+    environment:
+      RWA_USERNAME: admin
+      RWA_PASSWORD: #password
+      RWA_ADMIN: "TRUE"
+      RWA_RCON_HOST: mc
+      RWA_RCON_PASSWORD: #password
+    ports:
+      - 4326:4326
+      - 4327:4327
+    depends_on:
+      - mc
+  backups:
+    image: itzg/mc-backup
+    environment:
+      BACKUP_INTERVAL: "2h"
+      RCON_HOST: mc
+      POST_BACKUP_SCRIPT_FILE: /post-backup.sh
+    volumes:
+      - ./minecraft-data:/data:ro
+      - ./mc-backups:/backups
+      - ./post-backup.sh:/post.backup.sh:ro
