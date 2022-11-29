@@ -10,12 +10,14 @@ services:
       TYPE: "CURSEFORGE"
       VERSION: "1.12.2"
       CF_SERVER_MOD: /modpacks/MC_Eternal_1.6.1_Server.zip
+      COPY_MODS_DEST: /data/FeedTheBeast/MC_Eternal_1.6.1_Server/mods
       MEMORY: 6G
     tty: true
     stdin_open: true
     volumes:
       - ./minecraft-data:/data
       - ./modpacks:/modpacks
+      - ./mods:/mods
     dns:
       - "8.8.8.8"
       - "1.1.1.1"
@@ -38,7 +40,8 @@ services:
       BACKUP_INTERVAL: "2h"
       RCON_HOST: mc
       POST_BACKUP_SCRIPT_FILE: /post-backup.sh
+      INITAL_DELAY: "1200"
     volumes:
       - ./minecraft-data:/data:ro
       - ./mc-backups:/backups
-      - ./post-backup.sh:/post.backup.sh:ro
+      - ./post-backup.sh:/post-backup.sh:ro
