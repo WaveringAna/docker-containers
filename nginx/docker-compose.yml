@@ -4,7 +4,7 @@ services:
   nginx-proxy:
     image: nginxproxy/nginx-proxy
     environment:
-      - ENABLE_IPV6=true
+      - ENABLE_IPV6: true
     ports:
       - "80:80"
       - "443:443"
@@ -19,9 +19,7 @@ services:
   acme-companion:
     image: nginxproxy/acme-companion
     environment:
-      - DEFAULT_EMAIL=contact@nekomimi.pet
-    volumes_from:
-      - nginx-proxy
+      - DEFAULT_EMAIL: contact@nekomimi.pet
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - acme:/etc/acme.sh
